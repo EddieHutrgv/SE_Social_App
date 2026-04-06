@@ -18,3 +18,9 @@ Sprint 3	| Implement user registration and login system
 Sprint 4	| Develop study session CRUD features
 Sprint 5  | Implement join session functionality
 Sprint 6 | Testing, bug fixes, and final improvements
+
+# Run Server with these commands
+
+cd /workspaces/SE_Social_App/SB_Finder/test_SB
+source /workspaces/SE_Social_App/virt/bin/activate
+python3 manage.py runserver
