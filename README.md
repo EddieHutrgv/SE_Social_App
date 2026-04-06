@@ -26,6 +26,12 @@ cd /workspaces/SE_Social_App/SB_Finder/test_SB
 source /workspaces/SE_Social_App/virt/bin/activate
 
 python3 manage.py runserver
+<!-- Push to main steps
+cd /workspaces/SE_Social_App
+git add .
+git commit -m "Add login, signup and logout pages"
+git push origin main
+-->
 
 # Run Server with these commands (Windows)
 cd C:\path\to\your\project\SB_Finder\test_SB
