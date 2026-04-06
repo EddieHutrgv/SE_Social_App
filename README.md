@@ -19,8 +19,17 @@ Sprint 4	| Develop study session CRUD features
 Sprint 5  | Implement join session functionality
 Sprint 6 | Testing, bug fixes, and final improvements
 
-# Run Server with these commands
+# Run Server with these commands (Mac OS)
 
 cd /workspaces/SE_Social_App/SB_Finder/test_SB
+
 source /workspaces/SE_Social_App/virt/bin/activate
+
 python3 manage.py runserver
+
+# Run Server with these commands (Windows)
+cd C:\path\to\your\project\SB_Finder\test_SB
+
+virt\Scripts\activate
+
+python manage.py runserver
