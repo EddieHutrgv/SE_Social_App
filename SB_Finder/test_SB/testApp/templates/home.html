@@ -1,11 +1,160 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
-<head><title>SB Finder</title></head>
+<head>
+    <title>Study Buddy Finder - UTRGV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            background-color: #3a3a3a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .navbar h1 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .navbar h1 span { color: #F26522; }
+        .navbar a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .navbar a:hover { color: #F26522; }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 85vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #2e2e2e;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        .welcome-badge {
+            background-color: #efefef;
+            color: #3a3a3a;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            font-weight: 500;
+        }
+        .btn-primary-custom {
+            background-color: #F26522;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 5px;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-primary-custom:hover {
+            background-color: #d4551a;
+            color: white;
+        }
+        .btn-outline-custom {
+            background-color: transparent;
+            color: #3a3a3a;
+            padding: 12px 30px;
+            border: 2px solid #3a3a3a;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 5px;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-outline-custom:hover {
+            background-color: #3a3a3a;
+            color: white;
+        }
+        .divider {
+            width: 60px;
+            height: 4px;
+            background-color: #F26522;
+            margin: 15px auto 25px auto;
+            border-radius: 2px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 13px;
+            border-top: 1px solid #ddd;
+            background-color: #3a3a3a;
+            color: #aaa;
+        }
+        footer span { color: #F26522; font-weight: 600; }
+    </style>
+</head>
 <body>
-   <img src="{% static 'images/Open_Book.jpg' %}" alt="Book" width = "100" height="100" style="float: left; margin-right: 20px;">
-  <br> <h1>Study Buddy Finder</h1> <br>
-  <h2>Find your Study Buddy</h2>
-  <p1>Browse available study sessions and join groups that match your schedule</p1>
+    <div class="navbar">
+        <h1>🎓 Study Buddy <span>Finder</span></h1>
+        <div>
+            {% if user.is_authenticated %}
+                <a href="/logout/">Log Out</a>
+            {% else %}
+                <a href="/login/">Log In</a>
+                <a href="/signup/">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="hero">
+        {% if user.is_authenticated %}
+            <div class="welcome-badge">✅ Logged in as {{ user.username }}</div>
+            <h2>Welcome back, {{ user.username }}!</h2>
+            <div class="divider"></div>
+            <p>You are logged into Study Buddy Finder. Start exploring resources available to UTRGV students.</p>
+            <a href="/logout/" class="btn-primary-custom">Log Out</a>
+        {% else %}
+            <div class="welcome-badge">🎓 Exclusively for UTRGV Students</div>
+            <h2>Welcome to Study Buddy Finder</h2>
+            <div class="divider"></div>
+            <p>The platform built for UTRGV students. Sign up with your .edu email address to get started.</p>
+            <a href="/login/" class="btn-primary-custom">Log In</a>
+            <a href="/signup/" class="btn-outline-custom">Register</a>
+        {% endif %}
+    </div>
+
+    <footer>
+        © 2026 <span>Study Buddy Finder</span> · Built for UTRGV Students · All rights reserved
+    </footer>
 </body>
 </html>
