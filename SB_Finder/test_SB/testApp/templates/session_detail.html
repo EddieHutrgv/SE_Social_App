@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session Detail - Study BuddyFinder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; display: flex; flex-direction: column; min-height: 100vh; }
+        .navbar {
+            background-color: #3a3a3a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 { color: white; font-size: 20px; font-weight: 700; }
+        .navbar h1 span { color: #F26522; }
+        .navbar a { color: #ccc; text-decoration: none; font-size: 14px; margin-left: 15px; }
+        .navbar a:hover { color: #F26522; }
+        .container { max-width: 700px; margin: 40px auto; padding: 0 20px; flex: 1; }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-top: 4px solid #F26522;
+        }
+        .card h2 { font-size: 22px; color: #2e2e2e; margin-bottom: 5px; }
+        .course-badge {
+            display: inline-block;
+            background-color: #F26522;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .info-item { background-color: #f9f9f9; padding: 12px 16px; border-radius: 8px; }
+        .info-item .label { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; }
+        .info-item .value { font-size: 14px; color: #333; font-weight: 600; margin-top: 3px; }
+        .members-section { margin-top: 20px; }
+        .members-section h3 { font-size: 15px; color: #444; margin-bottom: 10px; }
+        .member-tag {
+            display: inline-block;
+            background-color: #efefef;
+            color: #555;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 3px;
+        }
+        .actions { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-orange {
+            background-color: #F26522;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-orange:hover { background-color: #d4551a; }
+        .btn-gray {
+            background-color: #3a3a3a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-gray:hover { background-color: #555; }
+        .btn-red {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-red:hover { background-color: #c0392b; }
+        .full-badge { background-color: #fdecea; color: #c0392b; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .available-badge { background-color: #e6f4ea; color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        footer { text-align: center; padding: 15px; background-color: #3a3a3a; color: #aaa; font-size: 12px; margin-top: 40px; }
+        footer span { color: #F26522; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎓 Study Buddy <span>Finder</span></h1>
+        <div>
+            <a href="/dashboard/">← Back to Dashboard</a>
+            <a href="/logout/">Log Out</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <span class="course-badge">{{ session.course }}</span>
+            <h2>{{ session.subject }}</h2>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">📍 Location</div>
+                    <div class="value">{{ session.location }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">📅 Date</div>
+                    <div class="value">{{ session.date }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">🕐 Time</div>
+                    <div class="value">{{ session.time }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">👤 Created by</div>
+                    <div class="value">{{ session.creator.username }}</div>
+                </div>
+            </div>
+
+            {% if session.is_full %}
+                <span class="full-badge">● Session Full</span>
+            {% else %}
+                <span class="available-badge">● {{ session.spots_left }} spot(s) available</span>
+            {% endif %}
+
+            <div class="members-section">
+                <h3>👥 Members ({{ session.members.count }}/{{ session.max_students }})</h3>
+                {% for member in session.members.all %}
+                    <span class="member-tag">{{ member.username }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="actions">
+                {% if is_creator %}
+                    <a href="/session/{{ session.pk }}/edit/" class="btn-gray">✏️ Edit</a>
+                    <a href="/session/{{ session.pk }}/delete/" class="btn-red">🗑️ Delete</a>
+                {% elif is_member %}
+                    <a href="/session/{{ session.pk }}/leave/" class="btn-gray">Leave Session</a>
+                {% elif not session.is_full %}
+                    <a href="/session/{{ session.pk }}/join/" class="btn-orange">Join Session</a>
+                {% else %}
+                    <span class="full-badge">Session is Full</span>
+                {% endif %}
+                <a href="/dashboard/" class="btn-gray">← Back</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>© 2026 <span>Study Buddy Finder</span> · Built for UTRGV Students</footer>
+</body>
+</html>

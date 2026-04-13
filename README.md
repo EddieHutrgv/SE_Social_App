@@ -19,7 +19,7 @@ Sprint 4	| Develop study session CRUD features
 Sprint 5  | Implement join session functionality
 Sprint 6 | Testing, bug fixes, and final improvements
 
-# Run Server with these commands (Mac OS)
+# Run Server with these commands 
 
 cd /workspaces/SE_Social_App/SB_Finder/test_SB
 
@@ -33,9 +33,3 @@ git commit -m "Add login, signup and logout pages"
 git push origin main
 -->
 
-# Run Server with these commands (Windows)
-cd C:\path\to\your\project\SB_Finder\test_SB
-
-virt\Scripts\activate
-
-python manage.py runserver

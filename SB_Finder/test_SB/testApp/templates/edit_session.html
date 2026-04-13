@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Session - Study Buddy Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; display: flex; flex-direction: column; min-height: 100vh; }
+        .navbar {
+            background-color: #3a3a3a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 { color: white; font-size: 20px; font-weight: 700; }
+        .navbar h1 span { color: #F26522; }
+        .navbar a { color: #ccc; text-decoration: none; font-size: 14px; margin-left: 15px; }
+        .navbar a:hover { color: #F26522; }
+        .content { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+        .card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 480px;
+            border-top: 4px solid #3a3a3a;
+        }
+        .card h2 { font-size: 20px; color: #2e2e2e; margin-bottom: 5px; }
+        .subtitle { color: #888; font-size: 13px; margin-bottom: 25px; }
+        label { font-size: 13px; color: #444; font-weight: 600; display: block; margin-bottom: 5px; }
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+        input:focus { outline: none; border-color: #F26522; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3a3a3a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover { background-color: #555; }
+        footer { text-align: center; padding: 15px; background-color: #3a3a3a; color: #aaa; font-size: 12px; }
+        footer span { color: #F26522; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎓 Study Buddy <span>Finder</span></h1>
+        <div>
+            <a href="/dashboard/">← Dashboard</a>
+            <a href="/logout/">Log Out</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="card">
+            <h2>Edit Study Session</h2>
+            <p class="subtitle">Update the details of your study session</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <label>Course Code</label>
+                <input type="text" name="course" value="{{ session.course }}" required>
+                <label>Subject / Topic</label>
+                <input type="text" name="subject" value="{{ session.subject }}" required>
+                <label>Location</label>
+                <input type="text" name="location" value="{{ session.location }}" required>
+                <div class="row">
+                    <div>
+                        <label>Date</label>
+                        <input type="date" name="date" value="{{ session.date }}" required>
+                    </div>
+                    <div>
+                        <label>Time</label>
+                        <input type="time" name="time" value="{{ session.time }}" required>
+                    </div>
+                </div>
+                <label>Max Students</label>
+                <input type="number" name="max_students" min="2" max="20" value="{{ session.max_students }}" required>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>© 2026 <span>Study Buddy Finder</span> · Built for UTRGV Students</footer>
+</body>
+</html>

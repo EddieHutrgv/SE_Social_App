@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Study Buddy Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f4f4; color: #333; }
+        .navbar {
+            background-color: #3a3a3a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .navbar h1 { color: white; font-size: 22px; font-weight: 700; }
+        .navbar h1 span { color: #F26522; }
+        .navbar a { color: #ccc; text-decoration: none; margin-left: 20px; font-size: 14px; }
+        .navbar a:hover { color: #F26522; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .top-bar h2 { font-size: 24px; color: #2e2e2e; }
+        .btn-orange {
+            background-color: #F26522;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .btn-orange:hover { background-color: #d4551a; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            border-left: 4px solid #F26522;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); }
+        .card h3 { font-size: 16px; color: #2e2e2e; margin-bottom: 8px; }
+        .card p { font-size: 13px; color: #666; margin-bottom: 5px; }
+        .card .spots {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .spots-available { background-color: #e6f4ea; color: #2e7d32; }
+        .spots-full { background-color: #fdecea; color: #c0392b; }
+        .card a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #F26522;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .card a:hover { color: #d4551a; }
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            font-size: 15px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #3a3a3a;
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 60px;
+        }
+        footer span { color: #F26522; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎓 Study Buddy <span>Finder</span></h1>
+        <div>
+            <a href="/dashboard/">Dashboard</a>
+            <a href="/session/create/">+ New Session</a>
+            <a href="/logout/">Log Out</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="top-bar">
+            <h2>📚 Available Study Sessions</h2>
+            <a href="/session/create/" class="btn-orange">+ Create Session</a>
+        </div>
+
+        {% if sessions %}
+            <div class="grid">
+                {% for session in sessions %}
+                <div class="card">
+                    <h3>{{ session.course }}</h3>
+                    <p>📖 {{ session.subject }}</p>
+                    <p>📍 {{ session.location }}</p>
+                    <p>📅 {{ session.date }} at {{ session.time }}</p>
+                    <p>👤 Created by {{ session.creator.username }}</p>
+                    {% if session.is_full %}
+                        <span class="spots spots-full">Full</span>
+                    {% else %}
+                        <span class="spots spots-available">{{ session.spots_left }} spot(s) left</span>
+                    {% endif %}
+                    <br>
+                    <a href="/session/{{ session.pk }}/">View Details →</a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty">
+                <p>No study sessions yet. Be the first to create one! 🎉</p>
+                <br>
+                <a href="/session/create/" class="btn-orange">+ Create Session</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>© 2026 <span>Study Buddy Finder</span> · Built for UTRGV Students</footer>
+</body>
+</html>
