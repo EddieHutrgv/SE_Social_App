@@ -250,6 +250,11 @@ def session_detail(request, pk):
     is_member = request.user in members
     is_creator = request.user == session.creator
     
+    # Split subject tags into a list for template
+    subject_tags_list = []
+    if session.subject_tags:
+        subject_tags_list = [tag.strip() for tag in session.subject_tags.split(',') if tag.strip()]
+    
     context = {
         'session': session,
         'members': members,
@@ -257,6 +262,7 @@ def session_detail(request, pk):
         'is_creator': is_creator,
         'member_count': session.get_member_count(),
         'is_full': session.is_full(),
+        'subject_tags_list': subject_tags_list,
     }
     return render(request, 'session_detail.html', context)
 
