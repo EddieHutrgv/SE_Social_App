@@ -395,7 +395,7 @@
                     <h4>👥 Capacity</h4>
                     <div class="capacity-bar">
                         <div class="capacity-progress">
-                            <div class="capacity-progress-fill" style="width: {{ member_count|div:session.max_capacity|mul:100 }}%"></div>
+                            <div class="capacity-progress-fill" style="width: {{ capacity_fill_width }}%"></div>
                         </div>
                         <div class="capacity-text">{{ member_count }}/{{ session.max_capacity }}</div>
                     </div>

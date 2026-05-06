@@ -255,13 +255,19 @@ def session_detail(request, pk):
     if session.subject_tags:
         subject_tags_list = [tag.strip() for tag in session.subject_tags.split(',') if tag.strip()]
     
+    member_count = session.get_member_count()
+    capacity_fill_width = 0
+    if session.max_capacity:
+        capacity_fill_width = min(round(member_count / session.max_capacity * 100), 100)
+
     context = {
         'session': session,
         'members': members,
         'is_member': is_member,
         'is_creator': is_creator,
-        'member_count': session.get_member_count(),
+        'member_count': member_count,
         'is_full': session.is_full(),
+        'capacity_fill_width': capacity_fill_width,
         'subject_tags_list': subject_tags_list,
     }
     return render(request, 'session_detail.html', context)
