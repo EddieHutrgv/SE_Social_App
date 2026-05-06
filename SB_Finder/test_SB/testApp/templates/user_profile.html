@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile - Study Buddy Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar {
+            background-color: #3a3a3a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .navbar h1 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+        .navbar h1 span { color: #F26522; }
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .navbar a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .navbar a:hover { color: #F26522; }
+        .container-main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .profile-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2e2e2e;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #F26522;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #3a3a3a;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: border 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #F26522;
+            box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.1);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-primary-custom {
+            background-color: #F26522;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary-custom:hover {
+            background-color: #d4551a;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: 'Poppins', sans-serif;
+            margin-left: 10px;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #F26522 0%, #d4551a 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 32px;
+            margin: 0;
+            font-weight: 700;
+        }
+        .stat-card p {
+            margin: 5px 0 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        .sessions-preview {
+            margin-top: 30px;
+        }
+        .sessions-preview h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #3a3a3a;
+        }
+        .session-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .session-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #F26522;
+        }
+        .session-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #2e2e2e;
+        }
+        .session-item p {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <h1>Study <span>Buddy</span> Finder</h1>
+        <div class="navbar-links">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'notifications' %}">Notifications</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-main">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>{{ created_sessions.count }}</h3>
+                <p>Sessions Created</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ joined_sessions.count }}</h3>
+                <p>Sessions Joined</p>
+            </div>
+        </div>
+
+        <!-- User Profile Section -->
+        <div class="profile-section">
+            <h2 class="section-title">👤 User Information</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ user_form.first_name.id_for_label }}">First Name</label>
+                        {{ user_form.first_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ user_form.last_name.id_for_label }}">Last Name</label>
+                        {{ user_form.last_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ user_form.email.id_for_label }}">Email</label>
+                        {{ user_form.email }}
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Academic Profile Section -->
+                <h3 style="font-size: 18px; font-weight: 600; margin: 20px 0 15px 0; color: #3a3a3a;">🎓 Academic Profile</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ profile_form.major.id_for_label }}">Major</label>
+                        {{ profile_form.major }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ profile_form.year.id_for_label }}">Year</label>
+                        {{ profile_form.year }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ profile_form.interests.id_for_label }}">Interests & Specializations</label>
+                    {{ profile_form.interests }}
+                    <small style="color: #666;">Separate interests with commas</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ profile_form.bio.id_for_label }}">Bio</label>
+                    {{ profile_form.bio }}
+                    <small style="color: #666;">Tell other students about yourself</small>
+                </div>
+
+                <!-- Availability Section -->
+                <h3 style="font-size: 18px; font-weight: 600; margin: 20px 0 15px 0; color: #3a3a3a;">🕐 Availability</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Select your available study times:</p>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        {{ profile_form.availability_morning }}
+                        <label for="{{ profile_form.availability_morning.id_for_label }}">Morning (8 AM - 12 PM)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        {{ profile_form.availability_afternoon }}
+                        <label for="{{ profile_form.availability_afternoon.id_for_label }}">Afternoon (12 PM - 4 PM)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        {{ profile_form.availability_evening }}
+                        <label for="{{ profile_form.availability_evening.id_for_label }}">Evening (4 PM - 8 PM)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        {{ profile_form.availability_night }}
+                        <label for="{{ profile_form.availability_night.id_for_label }}">Night (8 PM - 12 AM)</label>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-primary-custom">💾 Save Changes</button>
+                    <a href="{% url 'dashboard' %}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Your Sessions -->
+        {% if created_sessions or joined_sessions %}
+            <div class="profile-section">
+                <h2 class="section-title">📚 Your Study Sessions</h2>
+                
+                {% if created_sessions %}
+                    <div class="sessions-preview">
+                        <h3>Sessions You Created</h3>
+                        {% if created_sessions %}
+                            <div class="session-list">
+                                {% for session in created_sessions %}
+                                    <div class="session-item">
+                                        <h4>{{ session.course_name }}</h4>
+                                        <p><strong>📅</strong> {{ session.date }}</p>
+                                        <p><strong>🕐</strong> {{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</p>
+                                        <p><strong>📍</strong> {{ session.location }}</p>
+                                        <p><strong>👥</strong> {{ session.get_member_count }}/{{ session.max_capacity }} members</p>
+                                        <a href="{% url 'session_detail' session.pk %}" style="color: #F26522; font-weight: 600; text-decoration: none; font-size: 12px;">View Details →</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-message">No sessions created yet</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if joined_sessions %}
+                    <div class="sessions-preview">
+                        <h3>Sessions You've Joined</h3>
+                        {% if joined_sessions %}
+                            <div class="session-list">
+                                {% for session in joined_sessions %}
+                                    <div class="session-item">
+                                        <h4>{{ session.course_name }}</h4>
+                                        <p><strong>📅</strong> {{ session.date }}</p>
+                                        <p><strong>🕐</strong> {{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</p>
+                                        <p><strong>📍</strong> {{ session.location }}</p>
+                                        <p><strong>👥</strong> {{ session.get_member_count }}/{{ session.max_capacity }} members</p>
+                                        <a href="{% url 'session_detail' session.pk %}" style="color: #F26522; font-weight: 600; text-decoration: none; font-size: 12px;">View Details →</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-message">No sessions joined yet</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

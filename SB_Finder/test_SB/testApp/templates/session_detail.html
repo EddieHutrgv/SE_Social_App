@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session Details - Study Buddy Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar {
+            background-color: #3a3a3a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .navbar h1 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+        .navbar h1 span { color: #F26522; }
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .navbar a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .navbar a:hover { color: #F26522; }
+        .container-main {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #F26522;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .session-header {
+            background: linear-gradient(135deg, #F26522 0%, #d4551a 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .session-header h1 {
+            font-size: 32px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+        .session-header p {
+            font-size: 16px;
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+        .session-status {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .session-details {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .detail-section {
+            margin-bottom: 30px;
+        }
+        .detail-section h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2e2e2e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #F26522;
+        }
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .detail-item-icon {
+            font-size: 18px;
+            min-width: 25px;
+        }
+        .detail-item-content {
+            flex: 1;
+        }
+        .detail-item-label {
+            font-weight: 600;
+            color: #3a3a3a;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+        }
+        .detail-item-value {
+            color: #333;
+            margin-top: 3px;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2e2e2e;
+        }
+        .capacity-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .capacity-progress {
+            flex: 1;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .capacity-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #F26522 0%, #d4551a 100%);
+        }
+        .capacity-text {
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .member-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .member-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            background: #f8f9fa;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #F26522;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .member-info {
+            flex: 1;
+        }
+        .member-name {
+            font-weight: 600;
+            color: #2e2e2e;
+        }
+        .member-role {
+            font-size: 11px;
+            color: #999;
+        }
+        .btn-primary-custom {
+            background-color: #F26522;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+        }
+        .btn-primary-custom:hover {
+            background-color: #d4551a;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .creator-badge {
+            background: #F26522;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <h1>Study <span>Buddy</span> Finder</h1>
+        <div class="navbar-links">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'user_profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-main">
+        <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+
+        <!-- Session Header -->
+        <div class="session-header">
+            <h1>{{ session.course_name }}</h1>
+            <p>{{ session.course_code }}</p>
+            {% if session.is_full %}
+                <span class="session-status">🔴 FULL</span>
+            {% else %}
+                <span class="session-status">🟢 AVAILABLE</span>
+            {% endif %}
+        </div>
+
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="session-details">
+                <!-- Description -->
+                <div class="detail-section">
+                    <h3>📝 Description</h3>
+                    <p class="description">{{ session.description }}</p>
+                </div>
+
+                <!-- Session Information -->
+                <div class="detail-section">
+                    <h3>ℹ️ Session Information</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-item-icon">📅</div>
+                        <div class="detail-item-content">
+                            <div class="detail-item-label">Date</div>
+                            <div class="detail-item-value">{{ session.date }}</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-item-icon">🕐</div>
+                        <div class="detail-item-content">
+                            <div class="detail-item-label">Time</div>
+                            <div class="detail-item-value">{{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-item-icon">📍</div>
+                        <div class="detail-item-content">
+                            <div class="detail-item-label">Location</div>
+                            <div class="detail-item-value">
+                                {{ session.location }}
+                                {% if session.other_location %}
+                                    ({{ session.other_location }})
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-item-icon">👤</div>
+                        <div class="detail-item-content">
+                            <div class="detail-item-label">Created By</div>
+                            <div class="detail-item-value">
+                                {{ session.creator.username }}
+                                {% if is_creator %}
+                                    <span class="creator-badge">You</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if session.subject_tags %}
+                    <div class="detail-section">
+                        <h3>🏷️ Tags</h3>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            {% for tag in session.subject_tags|split:"," %}
+                                <span style="background: #f0f0f0; color: #333; padding: 5px 12px; border-radius: 20px; font-size: 12px;">{{ tag|safe }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Capacity Card -->
+                <div class="card">
+                    <h4>👥 Capacity</h4>
+                    <div class="capacity-bar">
+                        <div class="capacity-progress">
+                            <div class="capacity-progress-fill" style="width: {{ member_count|div:session.max_capacity|mul:100 }}%"></div>
+                        </div>
+                        <div class="capacity-text">{{ member_count }}/{{ session.max_capacity }}</div>
+                    </div>
+                    
+                    {% if not is_member and not is_full %}
+                        <a href="{% url 'join_session' session.pk %}" class="btn-primary-custom">✨ Join Session</a>
+                    {% elif is_full %}
+                        <div class="alert alert-info">This session is full.</div>
+                    {% elif is_member %}
+                        <div class="alert alert-info">You are already a member.</div>
+                        <a href="{% url 'leave_session' session.pk %}" class="btn-danger">Leave Session</a>
+                    {% endif %}
+                </div>
+
+                <!-- Members Card -->
+                <div class="card">
+                    <h4>📋 Members ({{ members.count }})</h4>
+                    <div class="member-list">
+                        {% for member in members %}
+                            <div class="member-item">
+                                <div class="member-avatar">{{ member.username|first|upper }}</div>
+                                <div class="member-info">
+                                    <div class="member-name">{{ member.get_full_name|default:member.username }}</div>
+                                    <div class="member-role">
+                                        {% if member == session.creator %}
+                                            Creator
+                                        {% else %}
+                                            Member
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Actions Card (if creator) -->
+                {% if is_creator %}
+                    <div class="card">
+                        <h4>⚙️ Actions</h4>
+                        <div class="button-group">
+                            <a href="{% url 'edit_session' session.pk %}" class="btn-secondary" style="background-color: #28a745;">Edit Session</a>
+                            <a href="{% url 'delete_session' session.pk %}" class="btn-danger">Delete Session</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
