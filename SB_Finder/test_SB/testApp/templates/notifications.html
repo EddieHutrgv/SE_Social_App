@@ -182,7 +182,7 @@
         <!-- Header -->
         <div class="header-section">
             <h2>🔔 Notifications</h2>
-            {% if notifications|length > 0 and notifications|first.is_read == False %}
+            {% if notifications|length > 0 and notificationsfirst.is_read == False %}
                 <form method="POST" style="margin: 0;">
                     {% csrf_token %}
                     <button type="submit" class="btn-mark-all">Mark All as Read</button>
