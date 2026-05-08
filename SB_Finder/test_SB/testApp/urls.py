@@ -10,6 +10,7 @@ urlpatterns = [
     # Dashboard and Profile
     path('dashboard/', views.dashboard, name='dashboard'),
     path('profile/', views.user_profile, name='user_profile'),
+    path('user/<int:user_id>/', views.view_user_profile, name='view_user_profile'),
     
     # Study Sessions
     path('session/create/', views.create_session, name='create_session'),

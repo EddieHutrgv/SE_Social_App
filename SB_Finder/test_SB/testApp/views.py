@@ -173,6 +173,32 @@ def user_profile(request):
 
 
 @login_required(login_url='login')
+def view_user_profile(request, user_id):
+    """View another user's profile"""
+    target_user = get_object_or_404(User, pk=user_id)
+    
+    try:
+        user_profile = target_user.profile
+    except UserProfile.DoesNotExist:
+        user_profile = UserProfile.objects.create(user=target_user)
+    
+    # Get user's created sessions
+    created_sessions = target_user.created_sessions.filter(is_active=True)
+    
+    # Get user's joined sessions
+    joined_sessions = target_user.joined_sessions.filter(is_active=True)
+    
+    context = {
+        'profile_user': target_user,
+        'user_profile': user_profile,
+        'created_sessions': created_sessions,
+        'joined_sessions': joined_sessions,
+        'is_own_profile': target_user == request.user,
+    }
+    return render(request, 'view_user_profile.html', context)
+
+
+@login_required(login_url='login')
 def create_session(request):
     """Create a new study session"""
     if request.method == 'POST':

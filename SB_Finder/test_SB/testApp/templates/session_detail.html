@@ -187,6 +187,12 @@
             background: #f8f9fa;
             margin-bottom: 8px;
             font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        .member-item:hover {
+            background: #e8eef7;
+            box-shadow: 0 2px 8px rgba(242, 101, 34, 0.15);
+            transform: translateX(4px);
         }
         .member-avatar {
             width: 32px;
@@ -415,19 +421,21 @@
                     <h4>📋 Members ({{ members.count }})</h4>
                     <div class="member-list">
                         {% for member in members %}
-                            <div class="member-item">
-                                <div class="member-avatar">{{ member.username|first|upper }}</div>
-                                <div class="member-info">
-                                    <div class="member-name">{{ member.get_full_name|default:member.username }}</div>
-                                    <div class="member-role">
-                                        {% if member == session.creator %}
-                                            Creator
-                                        {% else %}
-                                            Member
-                                        {% endif %}
+                            <a href="{% url 'view_user_profile' member.id %}" style="text-decoration: none; color: inherit;">
+                                <div class="member-item" style="cursor: pointer; transition: background 0.2s;">
+                                    <div class="member-avatar">{{ member.username|first|upper }}</div>
+                                    <div class="member-info">
+                                        <div class="member-name">{{ member.get_full_name|default:member.username }}</div>
+                                        <div class="member-role">
+                                            {% if member == session.creator %}
+                                                Creator
+                                            {% else %}
+                                                Member
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         {% endfor %}
                     </div>
                 </div>
