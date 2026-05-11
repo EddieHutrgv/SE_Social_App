@@ -62,9 +62,9 @@ class StudySessionForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Specify location'
             }),
-            'date': forms.DateInput(attrs={
+            'date': forms.TextInput(attrs={
                 'class': 'form-control',
-                'type': 'date'
+                'placeholder': 'YYYY-MM-DD'
             }),
             'start_time': forms.TimeInput(attrs={
                 'class': 'form-control',
