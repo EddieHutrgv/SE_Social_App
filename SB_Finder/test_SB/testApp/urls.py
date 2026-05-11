@@ -1,3 +1,5 @@
+"""URL configuration for the testApp application."""
+
 from django.urls import path
 from testApp import views
 

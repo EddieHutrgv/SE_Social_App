@@ -1,3 +1,9 @@
+"""Database models for the Study Buddy Finder application.
+
+This module defines the user profile extensions, study sessions,
+memberships, and notification models used by the app.
+"""
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator

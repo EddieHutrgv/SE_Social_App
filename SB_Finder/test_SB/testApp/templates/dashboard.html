@@ -1,3 +1,4 @@
+<!-- Template: dashboard.html - Main dashboard for browsing and managing sessions -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -372,7 +373,7 @@
                                 </div>
                                 <div class="session-info">
                                     <strong>🕐 Time:</strong>
-                                    <span class="session-info-value">{{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</span>
+                                    <span class="session-info-value">{{ session.start_time|time:"g:i A" }} - {{ session.end_time|time:"g:i A" }}</span>
                                 </div>
                                 <div class="session-info">
                                     <strong>📍 Location:</strong>
@@ -428,7 +429,7 @@
                                 </div>
                                 <div class="session-info">
                                     <strong>🕐 Time:</strong>
-                                    <span class="session-info-value">{{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</span>
+                                    <span class="session-info-value">{{ session.start_time|time:"g:i A" }} - {{ session.end_time|time:"g:i A" }}</span>
                                 </div>
                                 <div class="session-info">
                                     <strong>📍 Location:</strong>
@@ -463,7 +464,7 @@
                                 </div>
                                 <div class="session-info">
                                     <strong>🕐 Time:</strong>
-                                    <span class="session-info-value">{{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</span>
+                                    <span class="session-info-value">{{ session.start_time|time:"g:i A" }} - {{ session.end_time|time:"g:i A" }}</span>
                                 </div>
                                 <div class="session-info">
                                     <strong>📍 Location:</strong>

@@ -1,3 +1,9 @@
+"""Views for the Study Buddy Finder application.
+
+Each view handles incoming requests and renders HTML templates
+or redirects users based on their actions.
+"""
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -17,6 +23,8 @@ def home(request):
 
 def login_page(request):
     """User login view"""
+    # Handle form submission when the login form is POSTed.
+    # Use Django's authentication backend to validate the username/password.
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -30,6 +38,8 @@ def login_page(request):
 
 def signup_page(request):
     """User registration view"""
+    # Process the registration form when submitted.
+    # Enforce UTRGV-only registration by requiring a .edu email address.
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -42,6 +52,8 @@ def signup_page(request):
 
         if password1 != password2:
             return render(request, 'signup.html', {'error': 'Passwords do not match'})
+
+        # Check for an existing username or email to avoid duplicate accounts.
         if User.objects.filter(username=username).exists():
             return render(request, 'signup.html', {'error': 'Username already taken'})
         if User.objects.filter(email=email).exists():
@@ -70,12 +82,13 @@ def dashboard(request):
     try:
         user_profile = request.user.profile
     except UserProfile.DoesNotExist:
+        # Create a user profile for authenticated users if it does not exist yet.
         user_profile = UserProfile.objects.create(user=request.user)
 
-    # Get filter form
+    # Initialize the session filter form from query parameters.
     filter_form = SessionFilterForm(request.GET)
     
-    # Get all active sessions
+    # Start with all future, active sessions as the base queryset.
     sessions = StudySession.objects.filter(is_active=True, date__gte=timezone.now().date())
     
     # Apply filters
@@ -85,6 +98,7 @@ def dashboard(request):
         date = filter_form.cleaned_data.get('date')
         time_slot = filter_form.cleaned_data.get('time_slot')
         
+        # Apply the selected filters to the base session list.
         if course_name:
             sessions = sessions.filter(
                 Q(course_name__icontains=course_name) | 
@@ -103,10 +117,10 @@ def dashboard(request):
     # Get user's joined sessions
     joined_sessions = request.user.joined_sessions.filter(is_active=True)
     
-    # Get user's created sessions
+    # Get sessions the current user created and sessions they have joined.
     created_sessions = request.user.created_sessions.filter(is_active=True)
     
-    # Get unread notifications count
+    # Count unread notifications for the dashboard badge.
     unread_notifications = request.user.notifications.filter(is_read=False).count()
     
     context = {
@@ -122,6 +136,7 @@ def dashboard(request):
 
 def filter_by_time_slot(sessions, time_slot):
     """Filter sessions by time slot"""
+    # Translate a simple named time slot into a time range filter.
     from datetime import time
     
     if time_slot == 'morning':
@@ -143,6 +158,7 @@ def user_profile(request):
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
     
+    # When the user submits profile changes, validate and save the form data.
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
@@ -180,6 +196,7 @@ def view_user_profile(request, user_id):
     try:
         user_profile = target_user.profile
     except UserProfile.DoesNotExist:
+        # Ensure the target user's profile exists before rendering their page.
         user_profile = UserProfile.objects.create(user=target_user)
     
     # Get user's created sessions
@@ -208,7 +225,7 @@ def create_session(request):
             session.creator = request.user
             session.save()
             
-            # Add creator as a member
+            # Add creator as a member so they are included in session membership.
             SessionMembership.objects.create(user=request.user, session=session)
             
             messages.success(request, 'Study session created successfully!')
@@ -225,6 +242,7 @@ def edit_session(request, pk):
     session = get_object_or_404(StudySession, pk=pk)
     
     if request.user != session.creator:
+        # Prevent users from editing sessions they did not create.
         messages.error(request, 'You can only edit your own sessions!')
         return redirect('dashboard')
     
@@ -250,7 +268,7 @@ def delete_session(request, pk):
         return redirect('dashboard')
     
     if request.method == 'POST':
-        # Create notification for all members
+        # Notify each member that the session has been canceled.
         members = session.current_members.exclude(pk=request.user.pk)
         for member in members:
             Notification.objects.create(
@@ -276,7 +294,7 @@ def session_detail(request, pk):
     is_member = request.user in members
     is_creator = request.user == session.creator
     
-    # Split subject tags into a list for template
+    # Split subject tags into a list for template rendering.
     subject_tags_list = []
     if session.subject_tags:
         subject_tags_list = [tag.strip() for tag in session.subject_tags.split(',') if tag.strip()]
@@ -305,16 +323,18 @@ def join_session(request, pk):
     session = get_object_or_404(StudySession, pk=pk)
     
     if session.is_full():
+        # Prevent joining if the session has reached capacity.
         messages.error(request, 'This session is full!')
         return redirect('session_detail', pk=pk)
     
     if request.user in session.current_members.all():
+        # Avoid duplicate memberships for the same user.
         messages.error(request, 'You are already a member of this session!')
         return redirect('session_detail', pk=pk)
     
     SessionMembership.objects.create(user=request.user, session=session)
     
-    # Create notification for session creator
+    # Create notification for session creator to inform them of the new member.
     Notification.objects.create(
         user=session.creator,
         notification_type='session_join',
@@ -339,6 +359,7 @@ def leave_session(request, pk):
         membership.save()
         messages.success(request, 'You have left the session.')
     except SessionMembership.DoesNotExist:
+        # If no membership exists, the user cannot leave the session.
         messages.error(request, 'You are not a member of this session.')
     
     return redirect('dashboard')
@@ -349,7 +370,7 @@ def notifications(request):
     """View all notifications"""
     user_notifications = request.user.notifications.all().order_by('-created_at')
     
-    # Mark as read
+    # Mark all notifications as read when the user submits the notifications page.
     if request.method == 'POST':
         user_notifications.filter(is_read=False).update(is_read=True)
     

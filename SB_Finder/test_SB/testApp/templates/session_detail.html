@@ -1,3 +1,4 @@
+<!-- Template: session_detail.html - Details page for a specific study session -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -351,7 +352,7 @@
                         <div class="detail-item-icon">🕐</div>
                         <div class="detail-item-content">
                             <div class="detail-item-label">Time</div>
-                            <div class="detail-item-value">{{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }}</div>
+                            <div class="detail-item-value">{{ session.start_time|time:"g:i A" }} - {{ session.end_time|time:"g:i A" }}</div>
                         </div>
                     </div>
 

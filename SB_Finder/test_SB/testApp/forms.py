@@ -1,3 +1,9 @@
+"""Forms used by Study Buddy Finder.
+
+This module contains Django forms for profile management,
+study session creation, session filtering, and user updates.
+"""
+
 from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile, StudySession
